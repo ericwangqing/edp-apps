@@ -12,7 +12,9 @@ extract = (libRoot)->
         throw error if error 
         console.log "filepath is: #{filepath}"
         moduleConfigurations.push configuration if configuration = getModuleConfiguration sourceCode
-    next()  
+        next()
+    else
+      next()  
 
   walker.on 'end', ->
     console.log "modules: #{moduleConfigurations.length}"
