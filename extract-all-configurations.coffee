@@ -2,7 +2,7 @@ fs = require 'fs.extra'
 path = require 'path'
 # _ = require 'underscore'
 
-extract = (libRoot)->
+extractAllConfigurations = (libRoot, callback)->
   moduleConfigurations = []
   walker = fs.walk libRoot
   walker.on 'file', (root, stat, next)->
@@ -10,16 +10,17 @@ extract = (libRoot)->
       filepath = path.join root, stat.name
       fs.readFile filepath, {encoding: 'utf8'}, (error, sourceCode)->
         throw error if error 
-        console.log "filepath is: #{filepath}"
+        # console.log "filepath is: #{filepath}"
         moduleConfigurations.push configuration if configuration = getModuleConfiguration sourceCode
         next()
     else
       next()  
 
   walker.on 'end', ->
-    console.log "modules: #{moduleConfigurations.length}"
-    moduleConfigurations.forEach (conf)-> console.log "configuration: %j", conf
-    persistModuleConfigurations moduleConfigurations
+    # console.log "modules: #{moduleConfigurations.length}"
+    # moduleConfigurations.forEach (conf)-> console.log "configuration: %j", conf
+    persistModuleConfigurations moduleConfigurations, callback
+
 
 isSourceFile = (stat)->
   # console.log (path.extname stat.name)
@@ -31,7 +32,7 @@ isModuleConfigurationExisted = (filename)->
 
 getModuleConfiguration = (sourceCode)->
   # (sourceCode.split '\n')[0]
-  console.log sourceCode
+  # console.log sourceCode
   edpAnnotations = getEdpAnnotations sourceCode
   debugger
   if edpAnnotations?.length
@@ -70,9 +71,12 @@ getconfigurableItems = (annotations)->
 # process.argv.forEach (val, index, array)->
 #   console.log "index: #{index}, val: #{val}, array: %j", array
 
-persistModuleConfigurations = (configurations)->
+persistModuleConfigurations = (configurations, callback)->
   # TODO
+  callback configurations
 
-extract process.argv[2]
+module.exports = extractAllConfigurations
+
+# extractAllConfigurations process.argv[2]
 
 
