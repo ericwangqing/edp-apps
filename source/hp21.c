@@ -4,7 +4,6 @@
  *  description: 洗碗机开、关门控制模块，惠普芯片HP21
  *  author: 范冰冰
  *  version: 1.1
- *  last-modified: 2013-1-10
  */
 
 /**

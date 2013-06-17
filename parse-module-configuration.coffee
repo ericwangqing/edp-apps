@@ -2,15 +2,14 @@
 fs = require 'fs.extra'
 path = require 'path'
 
-parseModuleConfiguration = (filepath, moduleConfigurations, callback)->
+parseModuleConfiguration = (filepath, callback)->
   fs.readFile filepath, {encoding: 'utf8'}, (error, sourceCode)->
     throw error if error 
     # console.log "filepath is: #{filepath}"
     if configuration = getModuleConfiguration sourceCode
       changeAuthorNameToId configuration
       configuration.path = filepath
-      moduleConfigurations.push configuration 
-    callback()
+    callback(configuration)
 
 getModuleConfiguration = (sourceCode)->
   # console.log sourceCode
